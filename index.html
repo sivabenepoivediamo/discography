@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Discography</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:           #ffffff;
+      --surface:      #f8f8f7;
+      --ink:          #0a0a0a;
+      --mid:          #3a3a3a;
+      --muted:        #8a8a8a;
+      --line:         #e8e8e6;
+      --line-lt:      #f0f0ee;
+      --embed-bg:     #ebebea;
+      --hover-border: #c4c4c2;
+      --radius:       14px;
+      --max-w:        1120px;
+    }
+    [data-theme="dark"] {
+      --bg:           #0f0f0f;
+      --surface:      #1a1a1a;
+      --ink:          #f0f0ee;
+      --mid:          #b0b0ae;
+      --muted:        #5a5a58;
+      --line:         #2a2a28;
+      --line-lt:      #222220;
+      --embed-bg:     #1a1a1a;
+      --hover-border: #3c3c3a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; -webkit-text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color .35s ease, color .35s ease;
+    }
+
+    /* ── Layout ── */
+    .wrap {
+      max-width: calc(var(--max-w) + 48px);
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── Page top bar (language + theme toggles) ── */
+    .page-top {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 16px;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      padding: 20px 0 28px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 36px;
+      transition: border-color .35s ease;
+    }
+
+    .name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+    .name span { color: var(--muted); }
+
+    .tagline {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .header-links {
+      display: flex;
+      gap: 6px;
+      padding-bottom: 4px;
+      flex-wrap: wrap;
+    }
+    .hdr-link {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 14px;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .hdr-link:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+
+    /* ── Controls bar ── */
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .page-label {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 6px 13px;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .filter-btn:hover { border-color: var(--mid); color: var(--mid); }
+    .filter-btn.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
+    }
+    #countLabel {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-left: 2px;
+    }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+      gap: 20px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow .2s ease, border-color .35s ease, background-color .35s ease;
+    }
+    .card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,.07);
+      border-color: var(--hover-border);
+    }
+    .card.hidden { display: none; }
+
+    /* card header */
+    .card-head {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--line-lt);
+      flex: 1 1 auto;
+      transition: border-color .35s ease;
+    }
+    .card-eyebrow {
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .card-artist {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--mid);
+      display: block;
+      margin-bottom: 4px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .card-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: var(--ink);
+      display: block;
+      margin-top: 2px;
+    }
+    .card-meta {
+      margin-top: 8px;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .card-roles {
+      margin-top: 10px;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--mid);
+      line-height: 1.7;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding-top: 10px;
+      border-top: 1px solid var(--line-lt);
+    }
+
+    /* source tabs */
+    .card-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line-lt);
+      flex: 0 0 auto;
+      background: var(--surface);
+      transition: background-color .35s ease, border-color .35s ease;
+    }
+    .tab-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 14px;
+      cursor: pointer;
+      color: var(--mid);
+      transition: background .15s, color .15s, border-color .15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tab-btn:hover { border-color: var(--mid); }
+    .tab-btn[aria-pressed="true"] {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
+    }
+    .tab-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+    /* ── Dark-mode Bandcamp logo suppression ── */
+    /* The BC embed renders a logo strip at the bottom; we overlay it in dark mode */
+    [data-theme="dark"] .embed[data-name="bc"] .inner::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 28px;
+      background: #1a1a1a;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* embed area */
+    .card-embed {
+      background: var(--embed-bg);
+      flex: 0 0 auto;
+      position: relative;
+      transition: background-color .35s ease;
+    }
+
+    .embed { display: none; }
+    .embed.active {
+      display: block;
+      animation: fadeIn .15s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .embed .inner {
+      width: 100%;
+      aspect-ratio: 1/1;
+      position: relative;
+    }
+    .embed iframe {
+      position: absolute; inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      border: 0;
+    }
+
+    /* YouTube thumbnail */
+    .yt-thumb {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      position: relative;
+      background: #111;
+      text-decoration: none;
+    }
+    .yt-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: .88;
+      transition: opacity .22s, transform .35s ease;
+      display: block;
+    }
+    .yt-thumb:hover img { opacity: .65; transform: scale(1.02); }
+    .yt-play {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .yt-play svg {
+      width: 56px; height: 56px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,.4));
+      transition: transform .18s;
+    }
+    .yt-thumb:hover .yt-play svg { transform: scale(1.1); }
+
+    /* ── Contacts ── */
+    .contacts {
+      margin-top: 60px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      transition: border-color .35s ease;
+    }
+    .contacts a {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 16px;
+      transition: border-color .15s, color .15s;
+    }
+    .contacts a:hover { border-color: var(--ink); color: var(--ink); }
+
+    /* ── Footer ── */
+    .site-footer {
+      margin-top: 24px;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      transition: color .35s ease;
+    }
+    .site-toggles {
+      display: flex;
+      gap: 4px;
+    }
+    .toggle-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 5px 9px;
+      line-height: 1;
+      transition: border-color .15s, color .15s, background-color .35s ease, border-color .35s ease;
+    }
+    .toggle-btn:hover {
+      border-color: var(--mid);
+      color: var(--mid);
+    }
+
+    /* ── Dark-mode embed coherence ── */
+    [data-theme="dark"] .card-tabs {
+      background: #141414;
+      border-bottom-color: #222220;
+    }
+    [data-theme="dark"] .tab-btn {
+      background: #1a1a1a;
+      border-color: #2a2a28;
+      color: #b0b0ae;
+    }
+    [data-theme="dark"] .tab-btn:hover {
+      border-color: #3c3c3a;
+      color: #f0f0ee;
+    }
+    [data-theme="dark"] .tab-btn[aria-pressed="true"] {
+      background: #f0f0ee;
+      border-color: #f0f0ee;
+      color: #0f0f0f;
+    }
+    [data-theme="dark"] .card-embed {
+      background: #141414;
+    }
+
+    @media (max-width: 500px) {
+      .site-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="page-top">
+    <div class="site-toggles">
+      <button class="toggle-btn" id="langToggle" aria-label="Cambia lingua / Switch language">IT</button>
+      <button class="toggle-btn" id="themeToggle" aria-label="Cambia tema / Switch theme">☀</button>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div>
+      <h1 class="name">Davide <span>Fumai</span></h1>
+      <p class="tagline">Musicista · Polistrumentista · Sound Engineer</p>
+    </div>
+    <nav class="header-links">
+      <a class="hdr-link" href="mailto:fumaidavide@gmail.com">fumaidavide@gmail.com</a>
+      <a class="hdr-link" href="https://www.instagram.com/sivabenepoivediamo" target="_blank" rel="noreferrer noopener">@sivabenepoivediamo</a>
+    </nav>
+  </header>
+
+  <div class="controls">
+    <span class="page-label">Discografia, 2016–2026</span>
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter="all">Tutti</button>
+      <button class="filter-btn" data-filter="LP">LP</button>
+      <button class="filter-btn" data-filter="EP">EP</button>
+      <button class="filter-btn" data-filter="Singolo">Singoli</button>
+      <button class="filter-btn" data-filter="Compilation">Compilation</button>
+      <span id="countLabel"></span>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="contacts">
+    <a href="mailto:fumaidavide@gmail.com">fumaidavide@gmail.com</a>
+    <a href="https://www.instagram.com/sivabenepoivediamo" target="_blank" rel="noreferrer noopener">Instagram</a>
+  </div>
+
+  <footer class="site-footer">
+    <span>© <span id="yr"></span> Davide Fumai</span>
+    <span class="footer-credit">Discografia</span>
+  </footer>
+
+</div>
+
+<script>
+// ── Translations ──
+const T = {
+  it: {
+    tagline:      'Musicista · Polistrumentista · Sound Engineer',
+    pageLabel:    'Discografia, 2016–2026',
+    filterAll:    'Tutti',
+    filterSing:   'Singoli',
+    filterComp:   'Compilation',
+    voce:         'voce',
+    voci:         'voci',
+    footerRight:  'Discografia',
+    langBtn:      'EN',
+    themeLight:   'Bright',
+    themeDark:    'Dark',
+    selfProduced: 'Autoproduzione',
+  },
+  en: {
+    tagline:      'Musician · Multi-instrumentalist · Sound Engineer',
+    pageLabel:    'Discography, 2016–2026',
+    filterAll:    'All',
+    filterSing:   'Singles',
+    filterComp:   'Compilation',
+    voce:         'entry',
+    voci:         'entries',
+    footerRight:  'Discography',
+    langBtn:      'IT',
+    themeLight:   'Bright',
+    themeDark:    'Dark',
+    selfProduced: 'Self-Produced',
+  }
+};
+
+let lang  = 'en';
+let theme = 'dark';
+let currentFilter = 'all';
+
+// ── Entries (roles in both languages) ──
+const ENTRIES = [
+  { artist:"Turangalila", title:"Lazarus Cult", year:2026, fmt:"LP", label:"Private Room",
+    roles:{it:"Remix (traccia 9)", en:"Remix (track 9)"},
+    bc:{id:"album=2674300922",track:"828180992"},
+    yt:{thumb:"yekY-6eViho",href:"https://www.youtube.com/watch?v=RhvSDZPcvBs&list=OLAK5uy_kGWhsqWlk2MUB7aLHgrC4I2huJW3hdOvE&index=9"} },
+
+  { artist:"85 Fotogrammi", title:"Vito, vol. 3", year:2026, fmt:"LP", label:"Autoproduzione",
+    roles:{it:"Pianoforte (traccia 1), ripresa audio, pianoforte e voce (traccia 15)", en:"Piano (track 1), audio recording, piano and vocals (track 15)"},
+    bc:{id:"album=2917031972",track:"545708141"} },
+
+  { artist:"Let's Put Our Hearts Together", title:"Tributo a Brian Wilson", year:2025, fmt:"LP", label:"Autoproduzione",
+    roles:{it:"Ripresa audio (traccia 9)", en:"Audio recording (track 9)"},
+    bc:{id:"album=1978625752",track:"2953923812"} },
+
+  { artist:"Kreuz Cassidy", title:"Fioraio (La stagione dei dolori)", year:2025, fmt:"Singolo", label:"disconaughty",
+    roles:{it:"Ripresa e postproduzione audio", en:"Audio recording and post-production"},
+    yt:{thumb:"dUMa4j2k7Go",href:"https://www.youtube.com/watch?v=dUMa4j2k7Go"} },
+
+  { artist:"Pino Di Lenne", title:"Unione, non Congiunzione", year:2025, fmt:"LP", label:"Private Room",
+    roles:{it:"Mix e master", en:"Mix and mastering"},
+    yt:{thumb:"A3Dh72rClwU",href:"https://www.youtube.com/watch?v=A3Dh72rClwU"} },
+
+  { artist:"Sürd", title:"Sürd", year:2025, fmt:"LP", label:"1a0 / Locale Dischi",
+    roles:{it:"Ripresa audio", en:"Audio recording"},
+    bc:{id:"album=616919727",track:"2922591486"},
+    yt:{thumb:"eQb_s5BaWUw",href:"https://www.youtube.com/watch?v=eQb_s5BaWUw"} },
+
+  { artist:"85 Fotogrammi", title:"Vito, vol. 1", year:2025, fmt:"LP", label:"Autoproduzione",
+    roles:{it:"Batteria (traccia 11), pianoforte (traccia 12)", en:"Drums (track 11), piano (track 12)"},
+    bc:{id:"album=2386025136",track:"3050267236"} },
+
+  { artist:"Nicolò Sasso, Stefano Colucci", title:"Schumann: Dichterliebe and other Transcriptions for Guitar", year:2025, fmt:"LP", label:"Da Vinci Classics",
+    roles:{it:"Ripresa, postproduzione audio, mix e master", en:"Recording, audio post-production, mix and mastering"},
+    yt:{thumb:"yekY-6eViho",href:"https://www.youtube.com/watch?v=yekY-6eViho&list=OLAK5uy_nF9FP-Y9zg2nxIEgpDptgoWCftTYGC9lY&index=9"} },
+
+  { artist:"Kreuz Cassidy", title:"Il cielo in una stanza", year:2025, fmt:"Singolo", label:"disconaughty",
+    roles:{it:"Ripresa e postproduzione audio", en:"Audio recording and post-production"},
+    bc:{id:"track=422098743"},
+    yt:{thumb:"kgP4_7zHtkY",href:"https://www.youtube.com/watch?v=kgP4_7zHtkY"} },
+
+  { artist:"Strebla", title:"Cemento", year:2021, fmt:"LP", label:"Vollmer Industries · The Ghost is Clear Records · Troppistruzzi · 1a0 · Rodomonte Dischi · Bari Hardcore · Zero Produzioni",
+    roles:{it:"Ripresa e postproduzione audio, mix, produzione esecutiva", en:"Audio recording and post-production, mix, executive production"},
+    bc:{id:"album=871515374",track:"3718240871"},
+    yt:{thumb:"YlSX7usMp3E",href:"https://www.youtube.com/watch?v=YlSX7usMp3E"} },
+
+  { artist:"Rastroni", title:"Anime da Frutto", year:2021, fmt:"LP", label:"Angapp / Faro Records",
+    roles:{it:"Composizione, batteria e testi (traccia 5), arrangiamento, tastiere, pianoforte, organo Hammond", en:"Composition, drums and lyrics (track 5), arrangement, keyboards, piano, Hammond organ"},
+    yt:{thumb:"XyoSUyWQTQs",href:"https://www.youtube.com/watch?v=XyoSUyWQTQs"} },
+
+  { artist:"Mount Analogue", title:"Komitas", year:2021, fmt:"LP", label:"Autoproduzione",
+    roles:{it:"Pianoforte, sound design", en:"Piano, sound design"},
+    bc:{id:"album=1521046939",track:"4113858237"} },
+
+  { artist:"Mount Analogue", title:"Variations for Clara", year:2021, fmt:"LP", label:"disconaughty",
+    roles:{it:"Pianoforte, sound design", en:"Piano, sound design"},
+    bc:{id:"album=4253242522",track:"1346998010"} },
+
+  { artist:"PiroPiro", title:"Who Cares?", year:2020, fmt:"LP", label:"Too Much Information",
+    roles:{it:"Pianoforte e sound design (traccia 5), batteria (traccia 6)", en:"Piano and sound design (track 5), drums (track 6)"},
+    bc:{id:"album=2212153703",track:"1244838032"} },
+
+  { artist:"Good Moaning", title:"The Roost", year:2019, fmt:"LP", label:"Faro Records",
+    roles:{it:"Composizione, arrangiamento, tastiere, batteria, percussioni, voci, sound design, produzione esecutiva e direzione artistica", en:"Composition, arrangement, keyboards, drums, percussion, vocals, sound design, executive production and artistic direction"},
+    bc:{id:"album=2495263444",track:"3225866364"},
+    yt:{thumb:"IwrMxlY6jXo",href:"https://www.youtube.com/watch?v=IwrMxlY6jXo"} },
+
+  { artist:"Party Animal", title:"Leave", year:2019, fmt:"EP", label:"Dotto / Winter Beach / È Un Brutto Posto Dove Vivere",
+    roles:{it:"Batteria (traccia 2)", en:"Drums (track 2)"},
+    bc:{id:"album=3026329035",track:"2606487289"} },
+
+  { artist:"Sentimental Meat", title:"Take Me to the Deep", year:2018, fmt:"Singolo", label:"disconaughty",
+    roles:{it:"Tastiere", en:"Keyboards"},
+    yt:{thumb:"kxJbR4OMK7Q",href:"https://www.youtube.com/watch?v=kxJbR4OMK7Q"} },
+
+  { artist:"Good Moaning", title:"Dawn", year:2017, fmt:"LP", label:"Autoproduzione",
+    roles:{it:"Composizione, arrangiamento, tastiere, voci, sound design, produzione esecutiva e direzione artistica", en:"Composition, arrangement, keyboards, vocals, sound design, executive production and artistic direction"},
+    yt:{thumb:"vLCkM7LeYvU",href:"https://www.youtube.com/watch?v=vLCkM7LeYvU"} },
+
+  { artist:"Good Moaning", title:"Hello, Parasites", year:2016, fmt:"EP", label:"Autoproduzione",
+    roles:{it:"Composizione, arrangiamento, tastiere, batteria, percussioni, voci, sound design, produzione esecutiva e direzione artistica", en:"Composition, arrangement, keyboards, drums, percussion, vocals, sound design, executive production and artistic direction"},
+    bc:{id:"album=3677922069",track:"2788214863"},
+    yt:{thumb:"yekY-6eViho",href:"https://www.youtube.com/playlist?list=PLbms7G5hZimvzOKgVcDNKIhgcz7YtSMd1"} },
+
+  { artist:"Various Artists", title:"Litfiba - Trent'anni di 17 Re", year:2016, fmt:"Compilation", label:"—",
+    roles:{it:"Ripresa e postproduzione (traccia 12)", en:"Recording and post-production (track 12)"},
+    yt:{thumb:"A2XAM_OryT0",href:"https://www.youtube.com/watch?v=A2XAM_OryT0"} },
+];
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// ── Bandcamp bg color per theme ──
+function bcBgColor() {
+  return theme === 'dark' ? '1a1a1a' : 'ebebea';
+}
+function bcLinkColor() {
+  return theme === 'dark' ? 'f0f0ee' : '0a0a0a';
+}
+function updateThemeIcon() {
+  document.getElementById('themeToggle').textContent = theme === 'dark' ? '☀' : '☽';
+}
+
+function buildGrid(filter) {
+  currentFilter = filter;
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const t = T[lang];
+  const visible = ENTRIES.filter(e => filter === 'all' || e.fmt === filter);
+  document.getElementById('countLabel').textContent =
+    `${visible.length} ${visible.length === 1 ? t.voce : t.voci}`;
+
+  visible.forEach(entry => {
+    const hasBc = !!entry.bc, hasYt = !!entry.yt;
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.dataset.fmt = entry.fmt;
+
+    // ── Header ──
+    const head = document.createElement('div');
+    head.className = 'card-head';
+    const labelText = entry.label === 'Autoproduzione' ? t.selfProduced : entry.label;
+    head.innerHTML = `
+      <span class="card-eyebrow">${entry.fmt} · ${entry.year}</span>
+      <span class="card-artist">${entry.artist}</span>
+      <span class="card-title">${entry.title}</span>
+      <div class="card-meta">${labelText}</div>
+      <div class="card-roles">${entry.roles[lang]}</div>
+    `;
+    card.appendChild(head);
+
+    // ── Tabs ──
+    const tabs = document.createElement('div');
+    tabs.className = 'card-tabs';
+    const srcs = [];
+    if (hasBc) srcs.push('bc');
+    if (hasYt)  srcs.push('yt');
+
+    srcs.forEach((src, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'tab-btn';
+      btn.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+      btn.dataset.src = src;
+      btn.textContent = src === 'bc' ? 'Bandcamp' : 'YouTube';
+      tabs.appendChild(btn);
+    });
+    card.appendChild(tabs);
+
+    // ── Embed area ──
+    const embedArea = document.createElement('div');
+    embedArea.className = 'card-embed';
+    const loaded = {};
+
+    srcs.forEach((src, i) => {
+      const div = document.createElement('div');
+      div.className = 'embed' + (i === 0 ? ' active' : '');
+      div.dataset.name = src;
+
+      if (src === 'bc') {
+        const inner = document.createElement('div');
+        inner.className = 'inner';
+        const bc = entry.bc;
+        const trackPart = bc.track ? `/track=${bc.track}` : '';
+        const iframe = document.createElement('iframe');
+        iframe.dataset.lazySrc = `https://bandcamp.com/EmbeddedPlayer/${bc.id}/size=large/bgcol=${bcBgColor()}/linkcol=${bcLinkColor()}/tracklist=false${trackPart}/transparent=true/`;
+        iframe.title = 'Bandcamp'; iframe.style.border = '0';
+        inner.appendChild(iframe);
+        div.appendChild(inner);
+      } else {
+        const yt = entry.yt;
+        const inner = document.createElement('div');
+        inner.className = 'inner';
+        inner.innerHTML = `
+          <a class="yt-thumb" href="${yt.href}" target="_blank" rel="noreferrer noopener" aria-label="Open on YouTube">
+            <img src="https://i.ytimg.com/vi/${yt.thumb}/hqdefault.jpg" alt="" loading="lazy">
+            <span class="yt-play"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="34" fill="rgba(0,0,0,.55)"/><polygon points="28,21 52,34 28,47" fill="#fff"/></svg></span>
+          </a>`;
+        div.appendChild(inner);
+      }
+      embedArea.appendChild(div);
+
+      if (i === 0) {
+        loaded[src] = true;
+        const iframe = div.querySelector('iframe[data-lazy-src]');
+        if (iframe) { iframe.src = iframe.dataset.lazySrc; delete iframe.dataset.lazySrc; }
+      }
+    });
+
+    card.appendChild(embedArea);
+
+    // ── Tab switching ──
+    tabs.addEventListener('click', e => {
+      const btn = e.target.closest('.tab-btn');
+      if (!btn) return;
+      const src = btn.dataset.src;
+      tabs.querySelectorAll('.tab-btn').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      embedArea.querySelectorAll('.embed').forEach(em => {
+        em.classList.toggle('active', em.dataset.name === src);
+      });
+      if (!loaded[src]) {
+        loaded[src] = true;
+        const iframe = embedArea.querySelector(`.embed[data-name="${src}"] iframe[data-lazy-src]`);
+        if (iframe) { iframe.src = iframe.dataset.lazySrc; delete iframe.dataset.lazySrc; }
+      }
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+// ── Apply all translations to static UI ──
+function applyLang() {
+  const t = T[lang];
+  document.querySelector('.tagline').textContent = t.tagline;
+  document.querySelector('.page-label').textContent = t.pageLabel;
+  document.querySelector('[data-filter="all"]').textContent = t.filterAll;
+  document.querySelector('[data-filter="Singolo"]').textContent = t.filterSing;
+  document.querySelector('[data-filter="Compilation"]').textContent = t.filterComp;
+  document.querySelector('.footer-credit').textContent = t.footerRight;
+  document.getElementById('langToggle').textContent = t.langBtn;
+  buildGrid(currentFilter);
+}
+
+// ── Filter buttons ──
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    buildGrid(btn.dataset.filter);
+  });
+});
+
+// ── Lang toggle ──
+document.getElementById('langToggle').addEventListener('click', () => {
+  lang = lang === 'it' ? 'en' : 'it';
+  applyLang();
+});
+
+// ── Theme toggle ──
+document.getElementById('themeToggle').addEventListener('click', () => {
+  theme = theme === 'light' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = theme === 'dark' ? 'dark' : '';
+  updateThemeIcon();
+  // Update pending (lazy) Bandcamp iframes so they load with the right palette
+  const bg = bcBgColor(), lk = bcLinkColor();
+  document.querySelectorAll('iframe[data-lazy-src]').forEach(iframe => {
+    iframe.dataset.lazySrc = iframe.dataset.lazySrc
+      .replace(/bgcol=[a-fA-F0-9]+/, 'bgcol=' + bg)
+      .replace(/linkcol=[a-fA-F0-9]+/, 'linkcol=' + lk);
+  });
+});
+
+applyLang();
+</script>
+</body>
+</html>
