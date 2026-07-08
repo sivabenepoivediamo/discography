@@ -520,6 +520,10 @@ let currentFilter = 'all';
 
 // ── Entries (roles in both languages) ──
 const ENTRIES = [
+  { artist:"Cedro", title:"Italialainen Festa", year:2026, fmt:"Singolo", label:"Bit & Sound Music",
+    roles:{it:"Ripresa e postproduzione audio, mix e master", en:"Audio recording and post-production, mix and mastering"},
+    yt:{thumb:"kaIRly_TMs4",href:"https://www.youtube.com/watch?v=kaIRly_TMs4"} },
+
   { artist:"Turangalila", title:"Lazarus Cult", year:2026, fmt:"LP", label:"Private Room",
     roles:{it:"Remix (traccia 9)", en:"Remix (track 9)"},
     bc:{id:"album=2674300922",track:"828180992"},
@@ -539,7 +543,7 @@ const ENTRIES = [
 
   { artist:"Pino Di Lenne", title:"Unione, non Congiunzione", year:2025, fmt:"LP", label:"Private Room",
     roles:{it:"Mix e master", en:"Mix and mastering"},
-    yt:{thumb:"A3Dh72rClwU",href:"https://www.youtube.com/watch?v=A3Dh72rClwU"} },
+    yt:{thumb:"A3Dh72rClwU",href:"https://www.youtube.com/watch?v=A3Dh72rClwU&list=OLAK5uy_lG99txZ66IWDTmEhoZreIGq3i_EZbEnlU&index=10"} },
 
   { artist:"Sürd", title:"Sürd", year:2025, fmt:"LP", label:"1a0 / Locale Dischi",
     roles:{it:"Ripresa audio", en:"Audio recording"},
@@ -681,7 +685,7 @@ function buildGrid(filter) {
         const bc = entry.bc;
         const trackPart = bc.track ? `/track=${bc.track}` : '';
         const iframe = document.createElement('iframe');
-        iframe.dataset.lazySrc = `https://bandcamp.com/EmbeddedPlayer/${bc.id}/size=large/bgcol=${bcBgColor()}/linkcol=${bcLinkColor()}/tracklist=false${trackPart}/transparent=true/`;
+        iframe.dataset.lazySrc = `https://bandcamp.com/EmbeddedPlayer/${bc.id}/size=large/bgcol=${bcBgColor()}/linkcol=${bcLinkColor()}/tracklist=false${trackPart}/transparent=true/minimal=true/`;
         iframe.title = 'Bandcamp'; iframe.style.border = '0';
         inner.appendChild(iframe);
         div.appendChild(inner);
