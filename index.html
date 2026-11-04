@@ -639,25 +639,41 @@ function updateThemeIcon() {
   document.getElementById('themeToggle').textContent = theme === 'dark' ? '☀' : '☽';
 }
 
-function buildGrid(filter) {
+// ── Text helpers (language-dependent strings only) ──
+function labelFor(entry) {
+  return entry.label === 'Autoproduzione' ? T[lang].selfProduced : entry.label;
+}
+function updateCount() {
+  const t = T[lang];
+  const n = ENTRIES.filter(e => currentFilter === 'all' || e.fmt === currentFilter).length;
+  document.getElementById('countLabel').textContent = `${n} ${n === 1 ? t.voce : t.voci}`;
+}
+
+// Show/hide cards only: never rebuilds, so embeds and thumbnails keep their state
+function applyFilter(filter) {
   currentFilter = filter;
+  document.querySelectorAll('#grid .card').forEach(card => {
+    card.classList.toggle('hidden', filter !== 'all' && card.dataset.fmt !== filter);
+  });
+  updateCount();
+}
+
+// Builds every card once, on page load
+function buildGrid() {
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
-  const t = T[lang];
-  const visible = ENTRIES.filter(e => filter === 'all' || e.fmt === filter);
-  document.getElementById('countLabel').textContent =
-    `${visible.length} ${visible.length === 1 ? t.voce : t.voci}`;
 
-  visible.forEach(entry => {
+  ENTRIES.forEach(entry => {
     const hasBc = !!entry.bc, hasYt = !!entry.yt;
     const card = document.createElement('article');
     card.className = 'card';
     card.dataset.fmt = entry.fmt;
+    card._entry = entry;
 
     // ── Header ──
     const head = document.createElement('div');
     head.className = 'card-head';
-    const labelText = entry.label === 'Autoproduzione' ? t.selfProduced : entry.label;
+    const labelText = labelFor(entry);
     head.innerHTML = `
       <span class="card-eyebrow">${entry.fmt} · ${entry.year}</span>
       <span class="card-artist">${entry.artist}</span>
@@ -756,7 +772,15 @@ function applyLang() {
   document.querySelector('[data-filter="Compilation"]').textContent = t.filterComp;
   document.querySelector('.footer-credit').textContent = t.footerRight;
   document.getElementById('langToggle').textContent = t.langBtn;
-  buildGrid(currentFilter);
+  document.documentElement.lang = lang;
+
+  // Swap text only: cards, iframes and thumbnails stay untouched
+  updateCount();
+  document.querySelectorAll('#grid .card').forEach(card => {
+    const e = card._entry;
+    card.querySelector('.card-meta').textContent  = labelFor(e);
+    card.querySelector('.card-roles').textContent = e.roles[lang];
+  });
 }
 
 // ── Filter buttons ──
@@ -764,7 +788,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    buildGrid(btn.dataset.filter);
+    applyFilter(btn.dataset.filter);
   });
 });
 
@@ -788,6 +812,8 @@ document.getElementById('themeToggle').addEventListener('click', () => {
   });
 });
 
+buildGrid();
+applyFilter(currentFilter);
 applyLang();
 </script>
 </body>
